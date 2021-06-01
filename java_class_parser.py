@@ -6,6 +6,7 @@ import re
 
 class JavaClassParser:
     def __init__(self, code):
+        self.logs = ""
         self.code = code 
         self.dependencies = []
         self.__createClassTree()
@@ -123,18 +124,19 @@ class JavaClassParser:
           if grammer[:4] == "this":
             dependency = node.data.getVariableTypeOfObject(grammer[5:])
             if dependency != None:
-              print("CASE 1: Used an Attribute Object ")
-              print(node.data.className +" dependent by "+ dependency + " because " + usage + " is member of " + dependency + "  Object")
+              self.logs += "CASE 1: Used an Attribute Object \n"
+              self.logs += node.data.className +" dependent by "+ dependency + \
+              " because " + usage + " is member of " + dependency + "  Object\n"
               self.dependencies.append([node.data.className,dependency])
               found = 1
           
           if found == 0:
             objects = node.data.dynamicObjects
             for aObject in objects:
-              print(grammer.split(".")[0])
               if grammer.split(".")[0] == aObject.variableName: 
-                print("CASE 2: Used a Dynamically defined object")
-                print(node.data.className +" dependent by "+ aObject.variableType)
+                self.logs += "CASE 2: Used a Dynamically defined object\n"
+                self.logs += node.data.className +" dependent by "+ aObject.variableType + \
+                  " because " + usage + " is member of " + aObject.variableType + "  Object\n"
                 self.dependencies.append([node.data.className,aObject.variableType])
                 found = 1
                 break
@@ -144,8 +146,9 @@ class JavaClassParser:
             parameters = node.data.parameters 
             for parameter in parameters:
               if grammer.split(".")[0] == parameter.variableName:
-                print("CASE 3: Used a taken as parameter object ")
-                print(node.data.className +" dependent by "+ parameter.variableType + " because " + usage + " is member of " + parameter.variableType + "  Object")
+                self.logs += "CASE 3: Used a taken as parameter object \n"
+                self.logs += node.data.className +" dependent by "+ parameter.variableType +\
+                   " because " + usage + " is member of " + parameter.variableType + "  Object\n"
                 self.dependencies.append([node.data.className,parameter.variableType])                
                 found = 1
                 break
@@ -157,8 +160,9 @@ class JavaClassParser:
               parent_node = self.tree.get_node(parent)
               dependency = parent_node.data.getVariableTypeOfObject(grammer.split(".")[0])
               if dependency != None:
-                print("CASE 4: Used an attribute object belonging to parent class")
-                print(node.data.className +" dependent by "+ dependency)
+                self.logs += "CASE 4: Used an attribute object belonging to parent class\n"
+                self.logs += node.data.className +" dependent by "+ dependency+\
+                  " because " + usage + " is member of " + dependency + "  Object\n"
                 self.dependencies.append([node.data.className,dependency])
                 found = 1
                 break
@@ -166,7 +170,9 @@ class JavaClassParser:
                
               
     def information(self):
-      self.tree.show()
+      output = ""
+      string_tree = self.tree.show(stdout=False)
+      output +=string_tree+"\n"
 
       nodes = self.tree.all_nodes()
       
@@ -177,12 +183,14 @@ class JavaClassParser:
         aClass = node.data
         startLine = JavaClass.getLineNumber(aClass.startPos,self.code)
         endLine = JavaClass.getLineNumber(aClass.endPos,self.code)
-        print('------------------------------------')
-        print("[CLASS] " + aClass.className+' : '+str(startLine)+'-'+str(endLine))
+        output +='------------------------------------'+"\n"
+        output +="[CLASS] " + aClass.className+' : '+str(startLine)+'-'+str(endLine)+"\n"
 
-        aClass.printMembers(self.code)
+        output = aClass.printMembers(self.code, output)
         
-        print("--Member Usages---")
-        print(aClass.memberUsages)
+        output +="--Member Usages---\n"
+        output +=str(aClass.memberUsages)+"\n"
+
+      return output
 
 
