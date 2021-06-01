@@ -1,24 +1,69 @@
 from utility import Utility
 from java_class_parser import JavaClassParser
 
+import sys
+import argparse
 
-import os
 def main():
-    print("Hello")
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    print(dir_path)
 
-    #read the code
-    code = Utility.readFile(dir_path+"\\test2.java")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input",metavar = "FILEPATH",required=True, help="The path of the java file.")
+
+    parser.add_argument("--output",metavar = "FILEPATH",default=None, help="The path of the output file(s)")
+
+    parser.add_argument('--details', help="Creates a text file that consist parsing details by default.\
+             If this file is not desired, this flag is used with 'False' parameter .",metavar="BOOLEAN",type=bool,default=True)
+
+    parser.add_argument('--names',help= "show/hide the name of the member that caused the dependency on the graphic.\
+            This name information, shown by default, can make the graph invisible if dependency number is high."
+            ,metavar="BOOLEAN",type=bool,default=True)
+
+    parser.add_argument('--pngsize',type=int,nargs=2,default=(10,10)
+        ,help ='Specifies the inches size of the output graphic [inch][inch]')
+
+
+    args = parser.parse_args()
+
+    print(args)
+
+    try:
+        #read the code
+        input_path = args.input 
+        code = Utility.readFile(input_path)
+    except:
+        print("The file could not be opened")
+        sys.exit(-1)
+
+    #if not given specific path for output
+    if args.output == None:
+        outputPath = args.input
     
     #parse the code
     myParser = JavaClassParser(code)
 
-    #draw graph
+    #Add parsing information to output
+    output_string = myParser.information()
+    
+    #Add logs created while finding dependency to output
+    output_string += "\n----------------LOGS----------------\n"+ myParser.logs
+
+    #Add dependency list to output
+    output_string += "\n Dependencies: " +str(myParser.dependencies)
+
+    
+    #print output
+    print(output_string)
+
+    if args.details == True:
+        #write output to file 
+        f = open(outputPath+"_output.txt", "w",encoding="utf-8")
+        f.write(output_string)
+        f.close()
+
+    #draw graph and write to file
     nodes = myParser.getClassNames()[1:]
     edges = myParser.dependencies
-
-    Utility.draw_graph(nodes=nodes, edges=edges, path= dir_path+"\\aaa.png")
+    Utility.draw_graph(nodes=nodes, edges=edges, path= outputPath+"_output.png",size=args.pngsize)
     
 
 if __name__ == "__main__":
