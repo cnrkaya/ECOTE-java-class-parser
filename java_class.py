@@ -76,26 +76,29 @@ class JavaClass:
         if att.variableName == objectName:
           return att.variableType
 
-    def printMembers(self,doc):
-      print("---Attribute Objects---")
+    def printMembers(self,doc,output):
+      output +="---Attribute Objects---\n"
       if len(self.attributeObjects) == 0:
-        print("| None")
+        output +="| None\n"
       for att in self.attributeObjects:
-        print("| ",end="")
-        att.printObject(doc)
+        output +="| "
+        output += att.printObject(doc)
 
-      print("---Dynamic Objects---")
+      output +="---Dynamic Objects---\n"
       if len(self.dynamicObjects) == 0:
-        print("| None")
+        output +="| None\n"
       for att in self.dynamicObjects:
-        print("| ",end="")
-        att.printObject(doc)
-      print("---Parameters---")
+        output +="| "
+        output += att.printObject(doc)
+
+      output +="---Parameters---\n"
       if len(self.parameters) == 0:
-        print("| None")
+        output +="| None\n"
       for att in self.parameters:
-        print("| ",end="")
-        att.printObject(doc)     
+        output +="| "
+        output += att.printObject(doc)     
+
+      return output
 
 
     @staticmethod
