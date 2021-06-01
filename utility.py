@@ -20,14 +20,23 @@ class Utility:
     return False
 
   @staticmethod
-  def draw_graph(nodes, edges,size, path=None, save = True):
+  def draw_graph(nodes, edges,edge_labels,size, path=None, save = True):
 
     G = nx.DiGraph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
     #print(nx.info(G))
     plt.figure(figsize=size)
-    nx.draw_planar(G, with_labels=True,node_size=2000,node_color = '#86D3D4',node_shape='o',font_size="15",arrowsize=18)
+    
+    formatted_edge_labels = None
+    if edge_labels != None:
+      formatted_edge_labels = dict([((n[0], n[1]), edge_labels[i]) for  i, n in enumerate(G.edges(data=True))])
+
+    pos = nx.planar_layout(G)
+    nx.draw(G, pos, with_labels=True,node_size=2000,node_color = '#86D3D4',node_shape='o',font_size="15",arrowsize=18)
+    nx.draw_networkx_edge_labels(G, pos = pos,edge_labels=formatted_edge_labels, label_pos=0.5,
+                             font_color='red', font_size=10)
+
 
     if save:
       plt.savefig(path,transparent=True)

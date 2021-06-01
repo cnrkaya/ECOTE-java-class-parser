@@ -10,7 +10,6 @@ class JavaClassParser:
         self.code = code 
         self.dependencies = []
         self.__createClassTree()
-        self.__checkClassHierarchy()
         self.__findAttributeObjects()
         self.__findDynamicObjects()
         self.__findParameters()
@@ -127,7 +126,7 @@ class JavaClassParser:
               self.logs += "CASE 1: Used an Attribute Object \n"
               self.logs += node.data.className +" dependent by "+ dependency + \
               " because " + usage + " is member of " + dependency + "  Object\n"
-              self.dependencies.append([node.data.className,dependency])
+              self.dependencies.append([[node.data.className,dependency],usage])
               found = 1
           
           if found == 0:
@@ -137,7 +136,7 @@ class JavaClassParser:
                 self.logs += "CASE 2: Used a Dynamically defined object\n"
                 self.logs += node.data.className +" dependent by "+ aObject.variableType + \
                   " because " + usage + " is member of " + aObject.variableType + "  Object\n"
-                self.dependencies.append([node.data.className,aObject.variableType])
+                self.dependencies.append([[node.data.className,aObject.variableType],usage])
                 found = 1
                 break
             
@@ -149,7 +148,7 @@ class JavaClassParser:
                 self.logs += "CASE 3: Used a taken as parameter object \n"
                 self.logs += node.data.className +" dependent by "+ parameter.variableType +\
                    " because " + usage + " is member of " + parameter.variableType + "  Object\n"
-                self.dependencies.append([node.data.className,parameter.variableType])                
+                self.dependencies.append([[node.data.className,parameter.variableType],usage])
                 found = 1
                 break
 
@@ -163,7 +162,7 @@ class JavaClassParser:
                 self.logs += "CASE 4: Used an attribute object belonging to parent class\n"
                 self.logs += node.data.className +" dependent by "+ dependency+\
                   " because " + usage + " is member of " + dependency + "  Object\n"
-                self.dependencies.append([node.data.className,dependency])
+                self.dependencies.append([[node.data.className,dependency],usage])
                 found = 1
                 break
               parent = parent_node.data.parent

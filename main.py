@@ -6,6 +6,7 @@ import argparse
 
 def main():
 
+    #Parsing Arguments of the program
     parser = argparse.ArgumentParser()
     parser.add_argument("--input",metavar = "FILEPATH",required=True, help="The path of the java file.")
 
@@ -14,20 +15,19 @@ def main():
     parser.add_argument('--details', help="Creates a text file that consist parsing details by default.\
              If this file is not desired, this flag is used with 'False' parameter .",metavar="BOOLEAN",type=bool,default=True)
 
-    parser.add_argument('--names',help= "show/hide the name of the member that caused the dependency on the graphic.\
+    parser.add_argument('--labels',help= "show/hide the labels of the member that caused the dependency on the graphic.\
             This name information, shown by default, can make the graph invisible if dependency number is high."
             ,metavar="BOOLEAN",type=bool,default=True)
 
     parser.add_argument('--pngsize',type=int,nargs=2,default=(10,10)
         ,help ='Specifies the inches size of the output graphic [inch][inch]')
 
-
     args = parser.parse_args()
 
     print(args)
-
-    try:
-        #read the code
+    
+    #read the code
+    try:    
         input_path = args.input 
         code = Utility.readFile(input_path)
     except:
@@ -62,8 +62,12 @@ def main():
 
     #draw graph and write to file
     nodes = myParser.getClassNames()[1:]
-    edges = myParser.dependencies
-    Utility.draw_graph(nodes=nodes, edges=edges, path= outputPath+"_output.png",size=args.pngsize)
+    edges = []
+    labels = []
+    [[edges.append(dep[0]),labels.append(dep[1])] for dep in myParser.dependencies]
+    if args.labels == False:
+        labels = None
+    Utility.draw_graph(nodes=nodes, edges=edges,edge_labels=labels, path= outputPath+"_output.png",size=args.pngsize)
     
 
 if __name__ == "__main__":
