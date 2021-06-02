@@ -2,14 +2,15 @@ from utility import Utility,Object
 
 import re
 
-
 class JavaClass:
+    #Information of the java class that can create dependency is kept
+    
     def __init__(self,className,startPos, endPos,document):
             self.className = className
             self.startPos  = startPos
             self.endPos = endPos
             self.parent = None
-            self.code = document[startPos:endPos]
+            self.code = document[startPos:endPos] 
 
             self.attributeObjects = [] 
             self.dynamicObjects= []
@@ -18,6 +19,8 @@ class JavaClass:
             self.dependencies = []
 
     def __regexTransform(self,classNames):
+        # Converts class names consisting of string list into regex as seen in the example below
+        # ["Person","Contact"] ---> (Person|Contact)
         names = '('
         for name in classNames:
           names += name + "|"
@@ -27,20 +30,17 @@ class JavaClass:
         return names
             
     def setAttributeObjects(self,classNames):
-
+        #Find and set attribute Objects belonging to the class using regular expressions
         names = self.__regexTransform(classNames)
-        
         regex = names+'\s+(\w+)\s*;'
         attributes = re.finditer(regex,self.code)
         for att in attributes:
           startPos,endPos =att.span()
           
           self.attributeObjects.append(Object(att.group(1),att.group(2),self.startPos+endPos) )
-            
-        return 
 
     def setDynamicObjects(self,classNames):
-      
+      #Find and set dynamic Objects belonging to the class using regular expressions
       names = self.__regexTransform(classNames)
       regex = names + "\s+(\w+)\s*="
       dynamicObjects = re.finditer(regex,self.code)
@@ -51,7 +51,7 @@ class JavaClass:
 
 
     def setMemberUsages(self,doc):
-      
+      #Find and set member Usages belonging to the class using regular expressions
       regex = '(?:(\w+)\.)?(\w+)\.(\w+)'   #for member usages
       regex2 = '(?:(\w+)\.)?(\w+)\.(\w+)\(' #for method usages
       memberUsagess = re.finditer(regex,self.code)
@@ -64,19 +64,22 @@ class JavaClass:
               self.memberUsages.append(usage.group()+','+str(line))
 
     def setParameters(self,doc):
+      #Find and set parameters belonging to the class using regular expressions
       regex = '\((?:\s*(\w+)\s*(\w+)\s*,?)+\)'
       parameters =  re.finditer(regex,self.code)
-      for parameter in parameters:
-                  
+      for parameter in parameters:               
           startPos,endPos =parameter.span()
-          self.parameters.append( Object(parameter.group(1),parameter.group(2),self.startPos+endPos) )
+          self.parameters.append(Object(parameter.group(1),parameter.group(2),self.startPos+endPos))
           
     def getVariableTypeOfObject(self,objectName):
+    # return variable type of object if defined as an attribute
       for att in self.attributeObjects:
         if att.variableName == objectName:
           return att.variableType
 
     def printMembers(self,doc,output):
+    #return all member's informations
+    
       output +="---Attribute Objects---\n"
       if len(self.attributeObjects) == 0:
         output +="| None\n"
@@ -103,10 +106,12 @@ class JavaClass:
 
     @staticmethod
     def getLineNumber(pos, document):
+      #Returns the line number to which the character's position corresponds 
         return len(re.findall('\n', document[:pos])) + 1 
 
     @staticmethod
     def getPosition(lineNumber, document):
+    #Returns the position of the first character in the line number
        lines = re.finditer('\n', document)
        pos = 0
        for aLine in lines:
