@@ -1,0 +1,31 @@
+Root
+├── Contact
+└── Person
+
+------------------------------------
+[CLASS] Contact : 1-10
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| String email : 5
+--Member Usages---
+[]
+------------------------------------
+[CLASS] Person : 12-22
+---Attribute Objects---
+| Contact contact : 14
+---Dynamic Objects---
+| None
+---Parameters---
+| Contact contact : 15
+| String newEmail : 20
+--Member Usages---
+['this.contact.email,21']
+
+----------------LOGS----------------
+CASE 1: Used an Attribute Object 
+Person dependent by Contact because this.contact.email,21 is member of Contact  Object
+
+ Dependencies: [[['Person', 'Contact'], 'this.contact.email,21']]

@@ -1,0 +1,53 @@
+Root
+├── Pen
+├── Pencil
+└── Person
+    └── Child
+
+------------------------------------
+[CLASS] Pen : 1-6
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| int price : 3
+--Member Usages---
+[]
+------------------------------------
+[CLASS] Pencil : 7-12
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| int price : 9
+--Member Usages---
+[]
+------------------------------------
+[CLASS] Person : 14-26
+---Attribute Objects---
+| Pen pencil : 15
+---Dynamic Objects---
+| None
+---Parameters---
+| Pen pencil : 17
+| Pencil pencil : 22
+--Member Usages---
+[]
+------------------------------------
+[CLASS] Child : 20-25
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| Pencil pencil : 22
+--Member Usages---
+['pencil.price,23']
+
+----------------LOGS----------------
+CASE 3: Used a taken as parameter object 
+Child dependent by Pencil because pencil.price,23 is member of Pencil  Object
+
+ Dependencies: [[['Child', 'Pencil'], 'pencil.price,23']]

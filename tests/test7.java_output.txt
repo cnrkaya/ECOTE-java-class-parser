@@ -1,0 +1,34 @@
+Root
+├── Batman
+└── Superman
+
+------------------------------------
+[CLASS] Superman : 1-14
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| int power : 5
+| Batman target : 11
+--Member Usages---
+['target.health,12']
+------------------------------------
+[CLASS] Batman : 16-29
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| int power : 20
+| Superman target : 25
+--Member Usages---
+['target.health,26']
+
+----------------LOGS----------------
+CASE 3: Used a taken as parameter object 
+Superman dependent by Batman because target.health,12 is member of Batman  Object
+CASE 3: Used a taken as parameter object 
+Batman dependent by Superman because target.health,26 is member of Superman  Object
+
+ Dependencies: [[['Superman', 'Batman'], 'target.health,12'], [['Batman', 'Superman'], 'target.health,26']]

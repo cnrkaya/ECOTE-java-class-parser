@@ -1,0 +1,28 @@
+Root
+├── Car
+└── Engine
+
+------------------------------------
+[CLASS] Engine : 1-5
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| int power : 3
+--Member Usages---
+[]
+------------------------------------
+[CLASS] Car : 6-11
+---Attribute Objects---
+| Engine engine : 7
+---Dynamic Objects---
+| None
+---Parameters---
+| Engine engine : 8
+--Member Usages---
+[]
+
+----------------LOGS----------------
+
+ Dependencies: []

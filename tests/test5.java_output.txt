@@ -1,0 +1,69 @@
+Root
+├── AdultProfile
+├── Birthday
+├── ChildProfile
+├── Person
+└── User
+
+------------------------------------
+[CLASS] Birthday : 2-11
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| int day : 6
+--Member Usages---
+[]
+------------------------------------
+[CLASS] Person : 13-24
+---Attribute Objects---
+| Birthday bday : 14
+---Dynamic Objects---
+| None
+---Parameters---
+| Birthday bday : 15
+--Member Usages---
+['this.bday.year,19']
+------------------------------------
+[CLASS] ChildProfile : 27-32
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| None
+--Member Usages---
+[]
+------------------------------------
+[CLASS] AdultProfile : 34-39
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| None
+--Member Usages---
+[]
+------------------------------------
+[CLASS] User : 41-56
+---Attribute Objects---
+| Person person : 42
+---Dynamic Objects---
+| AdultProfile aProfile : 48
+| ChildProfile cProfile : 51
+---Parameters---
+| Person person : 43
+| isAdul t : 47
+--Member Usages---
+['aProfile.authority,49', 'cProfile.authority,52']
+
+----------------LOGS----------------
+CASE 1: Used an Attribute Object 
+Person dependent by Birthday because this.bday.year,19 is member of Birthday  Object
+CASE 2: Used a Dynamically defined object
+User dependent by AdultProfile because aProfile.authority,49 is member of AdultProfile  Object
+CASE 2: Used a Dynamically defined object
+User dependent by ChildProfile because cProfile.authority,52 is member of ChildProfile  Object
+
+ Dependencies: [[['Person', 'Birthday'], 'this.bday.year,19'], [['User', 'AdultProfile'], 'aProfile.authority,49'], [['User', 'ChildProfile'], 'cProfile.authority,52']]

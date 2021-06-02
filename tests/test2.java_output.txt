@@ -1,0 +1,32 @@
+Root
+├── Car
+└── Engine
+
+------------------------------------
+[CLASS] Engine : 1-5
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| None
+---Parameters---
+| int power : 3
+--Member Usages---
+[]
+------------------------------------
+[CLASS] Car : 6-12
+---Attribute Objects---
+| None
+---Dynamic Objects---
+| Engine myEngine : 9
+---Parameters---
+| Engine engine : 7
+| int power : 8
+| powe r : 9
+--Member Usages---
+['myEngine.power,10']
+
+----------------LOGS----------------
+CASE 2: Used a Dynamically defined object
+Car dependent by Engine because myEngine.power,10 is member of Engine  Object
+
+ Dependencies: [[['Car', 'Engine'], 'myEngine.power,10']]
