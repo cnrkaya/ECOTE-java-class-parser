@@ -53,6 +53,9 @@ class Object:
       self.variableType = variableType
       self.variableName = variableName   
 
+    def printLineNumber(self,doc):
+      return str(Utility.getLineNumber(self.pos,doc))+"\n"
+
     def printObject(self,doc):
-      return self.variableType +" "+ self.variableName + ' : '+ str(Utility.getLineNumber(self.pos,doc))+"\n"
+      return self.variableType +" "+ self.variableName + ' : '+ self.printLineNumber(doc)
     

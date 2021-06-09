@@ -96,12 +96,16 @@ class JavaClassParser:
           
           #CASE 1: Used an Attribute Objec
           if grammer[:4] == "this":
-            dependency = node.data.getVariableTypeOfObject(grammer[5:].split(".")[0])
+            objectName = grammer[5:].split(".")[0]
+            dependency = node.data.getVariableTypeOfObject(objectName)
             if dependency != None:
-              self.logs += "CASE 1: Used an Attribute Object \n"
-              self.logs += node.data.className +" dependent by "+ dependency + \
-              " because " + usage + " is member of " + dependency + "  Object\n"
+
+              scope = self.tree.get_node(dependency).data.getClassScope(self.code) # get scope of the dependency class
+              objectLine = node.data.getObjectLineNumber('attribute',objectName,doc=self.code)
+              self.appendLog(title="CASE 1: Used an Attribute Object",class1Name=node.data.className,class1Scope=node.data.getClassScope(self.code),
+                    class2Name=dependency, class2Scope=scope, usage=usage, objectLine= objectLine)
               self.dependencies.append([[node.data.className,dependency],usage])
+              
               found = 1
 
           #CASE 2: Used a Dynamically defined object
@@ -109,9 +113,11 @@ class JavaClassParser:
             objects = node.data.dynamicObjects
             for aObject in objects:
               if grammer.split(".")[0] == aObject.variableName: 
-                self.logs += "CASE 2: Used a Dynamically defined object\n"
-                self.logs += node.data.className +" dependent by "+ aObject.variableType + \
-                  " because " + usage + " is member of " + aObject.variableType + "  Object\n"
+
+
+                scope = self.tree.get_node(aObject.variableType).data.getClassScope(self.code) # get scope of the dependency class
+                self.appendLog(title="CASE 2: Used a Dynamically defined object",class1Name=node.data.className,class1Scope=node.data.getClassScope(self.code),
+                    class2Name=aObject.variableType, class2Scope=scope, usage=usage, objectLine= aObject.printLineNumber(self.code))
                 self.dependencies.append([[node.data.className,aObject.variableType],usage])
                 found = 1
                 break
@@ -122,9 +128,9 @@ class JavaClassParser:
             parameters = node.data.parameters 
             for parameter in parameters:
               if grammer.split(".")[0] == parameter.variableName:
-                self.logs += "CASE 3: Used a taken as parameter object \n"
-                self.logs += node.data.className +" dependent by "+ parameter.variableType +\
-                   " because " + usage + " is member of " + parameter.variableType + "  Object\n"
+                scope = self.tree.get_node(parameter.variableType).data.getClassScope(self.code) # get scope of the dependency class
+                self.appendLog(title="CASE 3: Used a taken as parameter object",class1Name=node.data.className,class1Scope=node.data.getClassScope(self.code),
+                    class2Name=parameter.variableType, class2Scope=scope, usage=usage, objectLine= parameter.printLineNumber(self.code))
                 self.dependencies.append([[node.data.className,parameter.variableType],usage])
                 found = 1
                 break
@@ -132,13 +138,18 @@ class JavaClassParser:
           #CASE 4: Used an attribute object belonging to parent class
           if found == 0:  
             parent = node.data.parent
+            objectName = grammer.split(".")[0]
             while parent != None:
               parent_node = self.tree.get_node(parent)
-              dependency = parent_node.data.getVariableTypeOfObject(grammer.split(".")[0])
+              dependency = parent_node.data.getVariableTypeOfObject(objectName)
+
               if dependency != None:
-                self.logs += "CASE 4: Used an attribute object belonging to parent class\n"
-                self.logs += node.data.className +" dependent by "+ dependency+\
-                  " because " + usage + " is member of " + dependency + "  Object\n"
+
+                scope = self.tree.get_node(dependency).data.getClassScope(self.code) # get scope of the dependency class
+                objectLine = parent_node.data.getObjectLineNumber('attribute',objectName,doc=self.code)
+                
+                self.appendLog(title="CASE 4: Used an attribute object belonging to parent class",class1Name=node.data.className,class1Scope=node.data.getClassScope(self.code),
+                    class2Name=dependency, class2Scope=scope, usage=usage, objectLine= objectLine)
                 self.dependencies.append([[node.data.className,dependency],usage])
                 found = 1
                 break
@@ -169,7 +180,11 @@ class JavaClassParser:
             openBracket -=1
           i += 1
       return i
-               
+
+    def appendLog(self,title,class1Name,class1Scope,class2Name,class2Scope,usage,objectLine):
+        self.logs += title+"\n"
+        self.logs += class1Name + class1Scope +" dependent by "+ class2Name +class2Scope + \
+              " because " + usage + " is member of " + class2Name + " Object,"+ objectLine+" \n"
               
     def information(self):
       #return informations generated during program execution

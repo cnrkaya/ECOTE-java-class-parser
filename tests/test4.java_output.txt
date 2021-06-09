@@ -47,7 +47,8 @@ Root
 ['pencil.price,23']
 
 ----------------LOGS----------------
-CASE 3: Used a taken as parameter object 
-Child dependent by Pencil because pencil.price,23 is member of Pencil  Object
+CASE 3: Used a taken as parameter object
+Child(20-25) dependent by Pencil(7-12) because pencil.price,23 is member of Pencil Object,22
+ 
 
  Dependencies: [[['Child', 'Pencil'], 'pencil.price,23']]

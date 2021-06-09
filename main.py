@@ -1,14 +1,24 @@
 from utility import Utility
 from java_class_parser import JavaClassParser
 
-import sys
+import sys,os
 import argparse
 
 def main():
 
+
+
     #Parsing Arguments of the program
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input",metavar = "FILEPATH",required=True, help="The path of the java file.")
+
+    def file_choices(choices,fname):
+        ext = os.path.splitext(fname)[1][1:]
+        if ext not in choices:
+            parser.error("file doesn't end with one of {}".format(choices))
+        return fname
+
+    parser.add_argument("--input",metavar = "FILEPATH",required=True, type=lambda s:file_choices(("java","txt"),s),
+                        help="The path of the java file. Extension must be .txt or .java.")
 
     parser.add_argument("--output",metavar = "FILEPATH",default=None, help="The path of the output file(s)")
 

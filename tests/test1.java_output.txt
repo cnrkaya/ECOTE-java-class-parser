@@ -25,7 +25,8 @@ Root
 ['this.contact.email,21']
 
 ----------------LOGS----------------
-CASE 1: Used an Attribute Object 
-Person dependent by Contact because this.contact.email,21 is member of Contact  Object
+CASE 1: Used an Attribute Object
+Person(12-22) dependent by Contact(1-10) because this.contact.email,21 is member of Contact Object,14
+ 
 
  Dependencies: [[['Person', 'Contact'], 'this.contact.email,21']]

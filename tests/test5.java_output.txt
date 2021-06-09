@@ -59,11 +59,14 @@ Root
 ['aProfile.authority,49', 'cProfile.authority,52']
 
 ----------------LOGS----------------
-CASE 1: Used an Attribute Object 
-Person dependent by Birthday because this.bday.year,19 is member of Birthday  Object
+CASE 1: Used an Attribute Object
+Person(13-24) dependent by Birthday(2-11) because this.bday.year,19 is member of Birthday Object,14
+ 
 CASE 2: Used a Dynamically defined object
-User dependent by AdultProfile because aProfile.authority,49 is member of AdultProfile  Object
+User(41-56) dependent by AdultProfile(34-39) because aProfile.authority,49 is member of AdultProfile Object,48
+ 
 CASE 2: Used a Dynamically defined object
-User dependent by ChildProfile because cProfile.authority,52 is member of ChildProfile  Object
+User(41-56) dependent by ChildProfile(27-32) because cProfile.authority,52 is member of ChildProfile Object,51
+ 
 
  Dependencies: [[['Person', 'Birthday'], 'this.bday.year,19'], [['User', 'AdultProfile'], 'aProfile.authority,49'], [['User', 'ChildProfile'], 'cProfile.authority,52']]

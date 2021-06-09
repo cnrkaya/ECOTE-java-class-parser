@@ -26,9 +26,11 @@ Root
 ['target.health,26']
 
 ----------------LOGS----------------
-CASE 3: Used a taken as parameter object 
-Superman dependent by Batman because target.health,12 is member of Batman  Object
-CASE 3: Used a taken as parameter object 
-Batman dependent by Superman because target.health,26 is member of Superman  Object
+CASE 3: Used a taken as parameter object
+Superman(1-14) dependent by Batman(16-29) because target.health,12 is member of Batman Object,11
+ 
+CASE 3: Used a taken as parameter object
+Batman(16-29) dependent by Superman(1-14) because target.health,26 is member of Superman Object,25
+ 
 
  Dependencies: [[['Superman', 'Batman'], 'target.health,12'], [['Batman', 'Superman'], 'target.health,26']]

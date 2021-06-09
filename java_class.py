@@ -77,6 +77,18 @@ class JavaClass:
         if att.variableName == objectName:
           return att.variableType
 
+    def getObjectLineNumber(self,objectType,objectName,doc):
+      if objectType == 'attribute':
+        for obj in self.attributeObjects:
+          if obj.variableName == objectName:
+            return obj.printLineNumber(doc)
+      if objectType == 'attribute':
+        for obj in self.attributeObjects:
+          if obj.variableName == objectName:
+            return obj.printLineNumber()
+      #if objectType == 'attribute':
+
+
     def printMembers(self,doc,output):
     #return all member's informations
     
@@ -102,6 +114,11 @@ class JavaClass:
         output += att.printObject(doc)     
 
       return output
+
+    def getClassScope(self,document):
+      #returns scope of the class with line numbers (starLine-endLine)
+      return '('+str(self.getLineNumber(self.startPos,document)) \
+            +'-'+str(self.getLineNumber(self.endPos,document)) + ')'
 
 
     @staticmethod

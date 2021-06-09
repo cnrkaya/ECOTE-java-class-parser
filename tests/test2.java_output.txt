@@ -27,6 +27,7 @@ Root
 
 ----------------LOGS----------------
 CASE 2: Used a Dynamically defined object
-Car dependent by Engine because myEngine.power,10 is member of Engine  Object
+Car(6-12) dependent by Engine(1-5) because myEngine.power,10 is member of Engine Object,9
+ 
 
  Dependencies: [[['Car', 'Engine'], 'myEngine.power,10']]

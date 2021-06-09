@@ -25,9 +25,11 @@ Root
 ['bill.amount,9', 'bill.amount,10']
 
 ----------------LOGS----------------
-CASE 3: Used a taken as parameter object 
-Client dependent by Bill because bill.amount,9 is member of Bill  Object
-CASE 3: Used a taken as parameter object 
-Client dependent by Bill because bill.amount,10 is member of Bill  Object
+CASE 3: Used a taken as parameter object
+Client(5-15) dependent by Bill(1-4) because bill.amount,9 is member of Bill Object,8
+ 
+CASE 3: Used a taken as parameter object
+Client(5-15) dependent by Bill(1-4) because bill.amount,10 is member of Bill Object,8
+ 
 
  Dependencies: [[['Client', 'Bill'], 'bill.amount,9'], [['Client', 'Bill'], 'bill.amount,10']]
